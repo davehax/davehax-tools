@@ -480,12 +480,38 @@ class PokeType {
         let uniqDoubleVulnerableTo = _.uniq(doubleVulnerableTo);
         let uniqDoubleResists = _.uniq(doubleResists);
 
+        // Filter out duplicate entries
+        uniqEffectiveAgainst = uniqEffectiveAgainst.filter((t) => uniqDoubleEffectiveAgainst.indexOf(t) === -1);
+        uniqNotEffectiveAgainst = uniqNotEffectiveAgainst.filter((t) => uniqDoubleNotEffectiveAgainst.indexOf(t) === -1).filter((t) => uniqImmuneAgainst.indexOf(t) === -1);
+        uniqVulnerableTo = uniqVulnerableTo.filter((t) => uniqDoubleVulnerableTo.indexOf(t) === -1);
+        uniqResists = uniqResists.filter((t) => uniqDoubleResists.indexOf(t) === -1).filter((t) => uniqImmuneFrom.indexOf(t) === -1);
+
+        // Apply damage mechanism matrix filters
+        // https://pokemongo.gamepress.gg/damage-mechanics
+        
+        // effective and not effective cancel each other out
+        // good thing we have previous arrays we can re-use for this part of the algorithm        
+        uniqEffectiveAgainst = uniqEffectiveAgainst.filter((t) => notEffectiveAgainst.indexOf(t) === -1);
+        uniqNotEffectiveAgainst = uniqNotEffectiveAgainst.filter((t) => effectiveAgainst.indexOf(t) === -1);
+
+        // effective is cancelled out by immunity
+        uniqEffectiveAgainst = uniqEffectiveAgainst.filter((t) => uniqImmuneAgainst.indexOf(t) === -1);
+
+
+        // vulnerable and resist cancel each other out
+        uniqVulnerableTo = uniqVulnerableTo.filter((t) => resists.indexOf(t) === -1);
+        uniqResists = uniqResists.filter((t) => vulnerableTo.indexOf(t) === -1);
+
+        // vulnerable to is cancelled out by immunity
+        uniqVulnerableTo = uniqVulnerableTo.filter((t) => immuneFrom.indexOf(t) === -1);
+
+
         // return object - can be condensed for clarity
         let obj = {
-            effectiveAgainst: uniqEffectiveAgainst.filter((t) => uniqDoubleEffectiveAgainst.indexOf(t) === -1),
-            notEffectiveAgainst: uniqNotEffectiveAgainst.filter((t) => uniqDoubleNotEffectiveAgainst.indexOf(t) === -1).filter((t) => uniqImmuneAgainst.indexOf(t) === -1),
-            vulnerableTo: uniqVulnerableTo.filter((t) => uniqDoubleVulnerableTo.indexOf(t) === -1),
-            resists: uniqResists.filter((t) => uniqDoubleResists.indexOf(t) === -1).filter((t) => uniqImmuneFrom.indexOf(t) === -1),
+            effectiveAgainst: uniqEffectiveAgainst,
+            notEffectiveAgainst: uniqNotEffectiveAgainst,
+            vulnerableTo: uniqVulnerableTo,
+            resists: uniqResists,
             immuneFrom: uniqImmuneFrom,
             immuneAgainst: uniqImmuneAgainst,
 

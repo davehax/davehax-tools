@@ -48,7 +48,7 @@ header {
 
 /* type */
 .type.unselected {
-    background-image: url('../img/poketype-assets/questionmark.png?v=0.1');
+    background-image: url('../img/poketype-assets/questionmark.png?v=0.2');
 }
 
 /* type - small */
@@ -76,7 +76,7 @@ header {
     margin: 1px; /* 100px w/h */
 
     background-color: transparent;
-    background-image: url('../img/poketype-assets/spritesheet.png?v=0.1');
+    background-image: url('../img/poketype-assets/spritesheet.png?v=0.2');
     background-size: 300px 150px;
 }
 
@@ -100,53 +100,6 @@ header {
 .type-wrapper.small .type.rock, .type.rock { background-position: -150px -100px }
 .type-wrapper.small .type.steel, .type.steel { background-position: -200px -100px }
 .type-wrapper.small .type.fire, .type.fire { background-position: -250px -100px }
-
-
-@media all and (min-width: 420px) {
-    .type-wrapper {
-        
-        width: 100px;
-        padding: 15px;
-        
-    }
-
-    .type-wrapper h3 {
-/*         margin: 5px 0px 0px 0px;
-        text-align: center;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        font-weight: 400; */
-        font-size: 1.17em;
-    }
-
-    .type {
-        width: 98px;
-        height: 98px;
-        background-size: 600px 300px;
-    }
-
-    .type.normal { background-position: 0px 0px }
-    .type.flying { background-position: -100px 0px }
-    .type.poison { background-position: -200px 0px }
-    .type.ground { background-position: -300px 0px }
-    .type.bug { background-position: -400px 0px }
-    .type.dark { background-position: -500px 0px }
-
-    .type.ghost { background-position: 0px -100px }
-    .type.water { background-position: -100px -100px }
-    .type.grass { background-position: -200px -100px }
-    .type.electric { background-position: -300px -100px }
-    .type.psychic { background-position: -400px -100px }
-    .type.dragon { background-position: -500px -100px }
-
-    .type.ice { background-position: 0px -200px }
-    .type.fairy { background-position: -100px -200px }
-    .type.fighting { background-position: -200px -200px }
-    .type.rock { background-position: -300px -200px }
-    .type.steel { background-position: -400px -200px }
-    .type.fire { background-position: -500px -200px }
-
-}
 
 
 /* type - double and immune */
@@ -227,10 +180,10 @@ header {
 .picker-panel {
     display: block;
     box-sizing: border-box;
-    width: 414px;
+    width: 320px;
     padding: 20px 10px 60px 10px;
 
-    height: calc(100vh - 40px);
+    height: calc(100vh - 80px);
     overflow: auto;
 
     position: absolute;
@@ -311,7 +264,7 @@ header {
 
 /* background */
 .background {
-    background-image: url('../img/pikachoo.jpg?v=0.1');
+    background-image: url('../img/pikachoo.jpg?v=0.2');
     background-position: center center;
     background-size: cover;
     min-height: calc(100vh - 2px);
@@ -320,8 +273,6 @@ header {
 
 /* legend */
 .legend {
-    display: flex;
-    justify-content: center;
     margin: 10px;
 }
 
@@ -353,3 +304,58 @@ header {
 
 .legend-item.immune { color: #000; }
 .legend-item.immune:before { background-color: #000; }
+
+@media all and (min-width: 420px) {
+    .type-wrapper {
+        
+        width: 100px;
+        padding: 15px;
+        
+    }
+
+    .type-wrapper h3 {
+/*         margin: 5px 0px 0px 0px;
+        text-align: center;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        font-weight: 400; */
+        font-size: 1.17em;
+    }
+
+    .type {
+        width: 98px;
+        height: 98px;
+        background-size: 600px 300px;
+    }
+
+    .type.normal { background-position: 0px 0px }
+    .type.flying { background-position: -100px 0px }
+    .type.poison { background-position: -200px 0px }
+    .type.ground { background-position: -300px 0px }
+    .type.bug { background-position: -400px 0px }
+    .type.dark { background-position: -500px 0px }
+
+    .type.ghost { background-position: 0px -100px }
+    .type.water { background-position: -100px -100px }
+    .type.grass { background-position: -200px -100px }
+    .type.electric { background-position: -300px -100px }
+    .type.psychic { background-position: -400px -100px }
+    .type.dragon { background-position: -500px -100px }
+
+    .type.ice { background-position: 0px -200px }
+    .type.fairy { background-position: -100px -200px }
+    .type.fighting { background-position: -200px -200px }
+    .type.rock { background-position: -300px -200px }
+    .type.steel { background-position: -400px -200px }
+    .type.fire { background-position: -500px -200px }
+
+    .picker-panel {
+        width: 414px;
+    }
+
+    .legend {
+        display: flex;
+        justify-content: center;
+    }
+
+}
