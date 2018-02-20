@@ -19,115 +19,139 @@ const type = {
     water: "water"
 }
 
-const effectiveness = {
+let effectiveness = {
     "bug": {
-        "effective": ["dark", "grass", "psychic"],
-        "resist": ["fighting", "grass", "ground"],
+        "effective": [type.dark, type.grass, type.psychic],
+        "resist": [type.fighting, type.grass, type.ground],
         "immune": []
     },
 
     "dark": {
-        "effective": ["ghost", "psychic"],
-        "resist": ["dark", "ghost"],
-        "immune": ["psychic"]
+        "effective": [type.ghost, type.psychic],
+        "resist": [type.dark, type.ghost],
+        "immune": [type.psychic]
     },
 
     "dragon": {
-        "effective": ["dragon"],
-        "resist": ["electric", "fire", "grass", "water"],
+        "effective": [type.dragon],
+        "resist": [type.electric, type.fire, type.grass, type.water],
         "immune": []
     },
 
     "electric": {
-        "effective": ["flying", "water"],
-        "resist": ["electric", "flying", "steel"],
+        "effective": [type.flying, type.water],
+        "resist": [type.electric, type.flying, type.steel],
         "immune": []
     },
 
     "fairy": {
-        "effective": ["dark", "dragon", "fighting"],
-        "resist": ["bug", "dark", "fighting"],
-        "immune": ["dragon"]
+        "effective": [type.dark, type.dragon, type.fighting],
+        "resist": [type.bug, type.dark, type.fighting],
+        "immune": [type.dragon]
     },
 
     "fighting": {
-        "effective": ["dark", "ice", "normal", "rock", "steel"],
-        "resist": ["bug", "dark", "rock"],
+        "effective": [type.dark, type.ice, type.normal, type.rock, type.steel],
+        "resist": [type.bug, type.dark, type.rock],
         "immune": []
     },
 
     "fire": {
-        "effective": ["bug", "grass", "ice", "steel"],
-        "resist": ["bug", "fairy", "fire", "grass", "ice", "steel"],
+        "effective": [type.bug, type.grass, type.ice, type.steel],
+        "resist": [type.bug, type.fairy, type.fire, type.grass, type.ice, type.steel],
         "immune": []
     },
 
     "flying": {
-        "effective": ["bug", "fighting", "grass"],
-        "resist": ["bug", "fighting", "grass"],
-        "immune": ["ground"]
+        "effective": [type.bug, type.fighting, type.grass],
+        "resist": [type.bug, type.fighting, type.grass],
+        "immune": [type.ground]
     },
 
     "ghost": {
-        "effective": ["ghost", "psychic"],
-        "resist": ["bug", "poison"],
-        "immune": ["fighting", "normal"]
+        "effective": [type.ghost, type.psychic],
+        "resist": [type.bug, type.poison],
+        "immune": [type.fighting, type.normal]
     },
 
     "grass": {
-        "effective": ["ground", "rock", "water"],
-        "resist": ["electric", "grass", "ground", "water"],
+        "effective": [type.ground, type.rock, type.water],
+        "resist": [type.electric, type.grass, type.ground, type.water],
         "immune": []
     },
 
     "ground": {
-        "effective": ["electric", "fire", "poison", "rock", "steel"],
-        "resist": ["poison", "rock"],
-        "immune": ["electric"]
+        "effective": [type.electric, type.fire, type.poison, type.rock, type.steel],
+        "resist": [type.poison, type.rock],
+        "immune": [type.electric]
     },
 
     "ice": {
-        "effective": ["dragon", "flying", "grass", "ground"],
-        "resist": ["ice"],
+        "effective": [type.dragon, type.flying, type.grass, type.ground],
+        "resist": [type.ice],
         "immune": []
     },
 
     "normal": {
         "effective": [],
         "resist": [],
-        "immune": ["ghost"]
+        "immune": [type.ghost]
     },
     
     "poison": {
-        "effective": ["fairy", "grass"],
-        "resist": ["bug", "fairy", "fighting", "grass", "poison"],
+        "effective": [type.fairy, type.grass],
+        "resist": [type.bug, type.fairy, type.fighting, type.grass, type.poison],
         "immune": [""]
     },
 
     "psychic": {
-        "effective": ["fighting", "poison"],
-        "resist": ["fighting", "psychic"],
+        "effective": [type.fighting, type.poison],
+        "resist": [type.fighting, type.psychic],
         "immune": []
     },
 
     "rock": {
-        "effective": ["bug", "fire", "flying", "ice"],
-        "resist": ["fire", "flying", "normal", "poison"],
+        "effective": [type.bug, type.fire, type.flying, type.ice],
+        "resist": [type.fire, type.flying, type.normal, type.poison],
         "immune": []
     },
 
     "steel": {
-        "effective": ["fairy", "ice", "rock"],
-        "resist": ["bug", "dragon", "fairy", "flying", "grass", "ice", "normal", "psychic", "rock", "steel"],
-        "immune": ["poison"]
+        "effective": [type.fairy, type.ice, type.rock],
+        "resist": [type.bug, type.dragon, type.fairy, type.flying, type.grass, type.ice, type.normal, type.psychic, type.rock, type.steel],
+        "immune": [type.poison]
     },
 
     "water": {
-        "effective": ["fire", "ground", "rock"],
-        "resist": ["fire", "ice", "steel", "water"],
+        "effective": [type.fire, type.ground, type.rock],
+        "resist": [type.fire, type.ice, type.steel, type.water],
         "immune": []
     }
 }
+
+// extend effectiveness
+for (let i in effectiveness) {
+    if (effectiveness.hasOwnProperty(i)) {
+
+        // build not effective, not effective immune, and vulnerable properties
+        effectiveness[i].notEffective = [];
+        effectiveness[i].notEffectiveImmune = [];
+        effectiveness[i].vulnerable = [];
+
+        for (let j in effectiveness) {
+            if (effectiveness.hasOwnProperty(j) && i !== j) {
+
+                if (effectiveness[j].resist.indexOf(i) !== -1) { effectiveness[i].notEffective.push(j) }
+                if (effectiveness[j].immune.indexOf(i) !== -1) { effectiveness[i].notEffectiveImmune.push(j) }
+                if (effectiveness[j].effective.indexOf(i) !== -1) { effectiveness[i].vulnerable.push(j) }
+
+            }
+        }
+
+    }
+}
+
+console.log(effectiveness);
 
 class PokeType {
     // As we're a class, all class properties must be declared in the constructor
@@ -162,11 +186,6 @@ class PokeType {
         this.type2Picker = this.buildPicker();
         centeredPanel.appendChild(this.type1Picker);
         centeredPanel.appendChild(this.type2Picker);
-        
-        // All-important reset button
-        // let reset = document.createElement("button");
-        // reset.innerText = "RESET";
-        // reset.className = "btn reset";
 
         // Legend
         this.legend = this.buildLegend();
@@ -189,7 +208,6 @@ class PokeType {
         this.container.appendChild(this.legend);
         this.container.appendChild(this.panelStrength);
         this.container.appendChild(this.panelWeakness);
-        // this.container.appendChild(reset);
         this.container.appendChild(pickerPanel);
 
         this.picker = new Picker(".picker-modal", (option) => {
@@ -220,13 +238,6 @@ class PokeType {
             this.resetPickerControl(this.type2Picker);
             this.displayStrenthsAndWeaknesses();
         })
-
-        // reset.addEventListener("click", (evt) => {
-        //     this.current = null;
-        //     this.resetPickerControl(this.type1Picker);
-        //     this.resetPickerControl(this.type2Picker);
-        //     this.displayStrenthsAndWeaknesses();
-        // })
     }
 
     resetPickerControl(element) {
@@ -262,10 +273,15 @@ class PokeType {
     }
 
     // Returns a <div> representing a single Pokemon Type
-    buildType(name, titleOverride) {
+    buildType(name, titleOverride, ...additionalClasses) {
+        // Title
         let displayName = titleOverride || name;
+
+        // Type div
         let typeDiv = document.createElement("div");
         typeDiv.classList.add("type-wrapper");
+        // If additional classes are passed in, set them on the type div
+        additionalClasses.forEach((c) => typeDiv.classList.add(c));
         typeDiv.setAttribute("data-type", name);
 
         let icon = document.createElement("div");
@@ -349,7 +365,7 @@ class PokeType {
     }
 
     // Builds a display panel
-    buildDisplayPanel(title, single, double, immune) {
+    buildSimpleDisplayPanel(title, single, double, immune) {
         single = single || []
         double = double || []
         immune = immune || []
@@ -362,27 +378,55 @@ class PokeType {
         label.innerText = title;
         panel.appendChild(label);
 
-        immune.forEach((t) => {
-            let o = this.buildType(t);
-            o.classList.add("immune");
-            o.classList.add("small");
-            panel.appendChild(o);
+        immune.forEach((t) => { panel.appendChild(this.buildType(t, false, "immune", "small")) });
+        double.forEach((t) => { panel.appendChild(this.buildType(t, false, "double", "small")) });
+        single.forEach((t) => { panel.appendChild(this.buildType(t, false, "small")) });
+
+        return panel;
+    }
+
+    // Build typed display panel
+    buildTypedDisplayPanel(title, selectedTypes, strengthsAndWeaknesses, key) {
+        // containing panel
+        let panel = document.createElement("div");
+        panel.classList.add("panel");
+        
+        // title e.g. effective against
+        let label = document.createElement("h3");
+        label.classList.add("label");
+        label.innerText = title;
+        panel.appendChild(label);
+
+        // flex panel
+        let flexPanel = document.createElement("div");
+        flexPanel.classList.add("panel");
+        flexPanel.classList.add("flex");
+
+        // Using the hashmap keys, derive the titles required
+        selectedTypes.forEach((selectedType) => {
+            let p = document.createElement("div");
+            p.classList.add("panel");
+            p.classList.add("typed");
+
+            strengthsAndWeaknesses[selectedType][key].forEach((t) => {
+                p.appendChild(
+                    this.buildType(t, false, "small")
+                )
+            })
+
+            // add the type label
+            let typeLabel = document.createElement("h4");
+            typeLabel.classList.add("label");
+            typeLabel.innerText = selectedType;
+            
+            // Append the type label to the panel
+            p.appendChild(typeLabel);
+
+            // Append the panel to the flex-panel - the parent panel
+            flexPanel.appendChild(p);
         })
 
-        double.forEach((t) => { 
-            let o = this.buildType(t);
-            o.classList.add("double");
-            o.classList.add("small");
-            panel.appendChild(o);
-        }) 
-
-        single.forEach((t) => { 
-            let o = this.buildType(t);
-            o.classList.add("small");
-            panel.appendChild(o); 
-        })         
-
-        this.panelStrength.appendChild(panel);
+        panel.appendChild(flexPanel);
 
         return panel;
     }
@@ -402,132 +446,52 @@ class PokeType {
     }
 
     // Perform POKEMAN calcumalations
-    /*
-        - Effective
-        - Double Effective
-        - Resist
-        - Double Resist
-        - Immune
+    calculateStrengthsAndWeaknesses2(selectedTypes) {
+        // define our return object to be filled in this function
+        let effectivenessProfile = {
+            combined: {
+                resist: [],
+                resistImmune: [],
+                vulnerable: [],
 
-        - Not Effective
-        - Double Not Effective
-        - Vulnerable
-        - Double Vulnerable
-    */
-    calculateStrengthsAndWeaknesses(selectedTypes) {
-        let effectiveAgainst = [];
-        let doubleEffectiveAgainst = [];
-        let notEffectiveAgainst = [];
-        let doubleNotEffectiveAgainst = [];
-        let vulnerableTo = [];
-        let doubleVulnerableTo = [];
-        let resists = [];
-        let doubleResists = [];
-        let immuneFrom = [];
-        let immuneAgainst = [];
-
-        for (let key in selectedTypes) {
-            let t = effectiveness[selectedTypes[key]];
-            effectiveAgainst = effectiveAgainst.concat(t.effective);
-            resists = resists.concat(t.resist);
-            immuneFrom = immuneFrom.concat(t.immune);
-        }
-
-        // double effective indicated by duplicate entries in effectiveAgainst array
-        doubleEffectiveAgainst = getDuplicateEntriesInStringArray(effectiveAgainst);
-
-        // double resist indicated by duplicate entries in resists array
-        doubleResists = getDuplicateEntriesInStringArray(resists);
-
-        // weak to requires type reverse lookup (1.4x or greater damage from)
-        // not effective against requires type reverse lookup
-        for (let selectedTypeKey in selectedTypes) {
-            let thisType = selectedTypes[selectedTypeKey];
-
-            for (let typeKey in effectiveness) {
-                let checkType = effectiveness[typeKey];
-                
-                if (checkType.effective.indexOf(thisType) > -1) {
-                    vulnerableTo.push(typeKey);
-                }
-
-                if (checkType.resist.indexOf(thisType) > -1) {
-                    notEffectiveAgainst.push(typeKey);
-                }
-
-                if (checkType.immune.indexOf(thisType) > -1) {
-                    immuneAgainst.push(typeKey);
-                }
-            }
-
-        }
-
-        doubleVulnerableTo = getDuplicateEntriesInStringArray(vulnerableTo);
-        doubleNotEffectiveAgainst = getDuplicateEntriesInStringArray(notEffectiveAgainst);
-
-        // Alright, we have our arrays to work with.
-        // For display purposes we only need unique entries in each array
-        let uniqEffectiveAgainst = _.uniq(effectiveAgainst);
-        let uniqNotEffectiveAgainst = _.uniq(notEffectiveAgainst);
-        let uniqVulnerableTo = _.uniq(vulnerableTo);
-        let uniqResists = _.uniq(resists);
-        let uniqImmuneFrom = _.uniq(immuneFrom);
-        let uniqImmuneAgainst = _.uniq(immuneAgainst);
-
-        // more...
-        let uniqDoubleEffectiveAgainst = _.uniq(doubleEffectiveAgainst);
-        let uniqDoubleNotEffectiveAgainst = _.uniq(doubleNotEffectiveAgainst);
-        let uniqDoubleVulnerableTo = _.uniq(doubleVulnerableTo);
-        let uniqDoubleResists = _.uniq(doubleResists);
-
-        // Filter out duplicate entries
-        uniqEffectiveAgainst = uniqEffectiveAgainst.filter((t) => uniqDoubleEffectiveAgainst.indexOf(t) === -1);
-        uniqNotEffectiveAgainst = uniqNotEffectiveAgainst.filter((t) => uniqDoubleNotEffectiveAgainst.indexOf(t) === -1).filter((t) => uniqImmuneAgainst.indexOf(t) === -1);
-        uniqVulnerableTo = uniqVulnerableTo.filter((t) => uniqDoubleVulnerableTo.indexOf(t) === -1);
-        uniqResists = uniqResists.filter((t) => uniqDoubleResists.indexOf(t) === -1).filter((t) => uniqImmuneFrom.indexOf(t) === -1);
-
-        // Apply damage mechanism matrix filters
-        // https://pokemongo.gamepress.gg/damage-mechanics
-        
-        // effective and not effective cancel each other out
-        // good thing we have previous arrays we can re-use for this part of the algorithm        
-        uniqEffectiveAgainst = uniqEffectiveAgainst.filter((t) => notEffectiveAgainst.indexOf(t) === -1);
-        uniqNotEffectiveAgainst = uniqNotEffectiveAgainst.filter((t) => effectiveAgainst.indexOf(t) === -1);
-
-        // effective is cancelled out by immunity
-        uniqEffectiveAgainst = uniqEffectiveAgainst.filter((t) => uniqImmuneAgainst.indexOf(t) === -1);
-
-
-        // vulnerable and resist cancel each other out
-        uniqVulnerableTo = uniqVulnerableTo.filter((t) => resists.indexOf(t) === -1);
-        uniqResists = uniqResists.filter((t) => vulnerableTo.indexOf(t) === -1);
-
-        // vulnerable to is cancelled out by immunity
-        uniqVulnerableTo = uniqVulnerableTo.filter((t) => immuneFrom.indexOf(t) === -1);
-
-
-        // return object - can be condensed for clarity
-        let obj = {
-            effectiveAgainst: uniqEffectiveAgainst,
-            notEffectiveAgainst: uniqNotEffectiveAgainst,
-            vulnerableTo: uniqVulnerableTo,
-            resists: uniqResists,
-            immuneFrom: uniqImmuneFrom,
-            immuneAgainst: uniqImmuneAgainst,
-
-            doubleEffectiveAgainst: uniqDoubleEffectiveAgainst,
-            doubleNotEffectiveAgainst: uniqDoubleNotEffectiveAgainst,
-            doubleVulnerableTo: uniqDoubleVulnerableTo,
-            doubleResists: uniqDoubleResists
-        }
-
-        for (let key in obj) {
-            if (obj.hasOwnProperty(key)) {
-                obj[key] = obj[key].sort(sortAlphabeticallyAsc);
+                // doubles
+                resistDouble: [],
+                vulnerableDouble: []
             }
         }
 
-        return obj;
+        // force distinct values for selected types
+        selectedTypes = _.uniq(selectedTypes);
+
+        // Combine resist, vulnerable and immune
+        selectedTypes.forEach((t) => {
+            let typeInfo = effectiveness[t];
+            effectivenessProfile[t] = typeInfo;
+            effectivenessProfile.combined.resist = effectivenessProfile.combined.resist.concat(typeInfo.resist);
+            effectivenessProfile.combined.vulnerable = effectivenessProfile.combined.vulnerable.concat(typeInfo.vulnerable);
+            effectivenessProfile.combined.resistImmune = effectivenessProfile.combined.resistImmune.concat(typeInfo.immune);
+        });
+
+        // extract duplicates
+        effectivenessProfile.combined.resistDouble = effectivenessProfile.combined.resist.reduce(getDuplicatesReducer, []);
+        effectivenessProfile.combined.vulnerableDouble = effectivenessProfile.combined.vulnerable.reduce(getDuplicatesReducer, []);
+
+        // Get only distinct values for resist and vulnerable
+        effectivenessProfile.combined.resist = _.uniq(effectivenessProfile.combined.resist);
+        effectivenessProfile.combined.vulnerable = _.uniq(effectivenessProfile.combined.vulnerable);
+
+        // And then filter our items that appear in the double arrays
+        effectivenessProfile.combined.resist = effectivenessProfile.combined.resist.filter((t) => effectivenessProfile.combined.resistDouble.indexOf(t) !== -1);
+        effectivenessProfile.combined.vulnerable = effectivenessProfile.combined.vulnerable.filter((t) => effectivenessProfile.combined.vulnerableDouble.indexOf(t) !== -1);
+
+        // Sort the arrays in the combined object alphabetically ascending
+        for (let key in effectivenessProfile.combined) {
+            if (effectivenessProfile.combined.hasOwnProperty(key)) {
+                effectivenessProfile.combined[key] = effectivenessProfile.combined[key].sort(sortAlphabeticallyAsc);
+            }
+        }
+
+        return effectivenessProfile;
     }
 
     //
@@ -541,7 +505,7 @@ class PokeType {
             return;
         }
 
-        let strengthsAndWeaknesses = this.calculateStrengthsAndWeaknesses(selectedTypes);
+        let strengthsAndWeaknesses = this.calculateStrengthsAndWeaknesses2(selectedTypes);
         console.log(strengthsAndWeaknesses);
 
         // effective panel - prioritise double effective
@@ -549,22 +513,25 @@ class PokeType {
         eTitle.innerText = "Strengths";
         this.panelStrength.appendChild(eTitle);
 
+
+        
         this.panelStrength.appendChild(
-            this.buildDisplayPanel(
-                "Effective Against", 
-                strengthsAndWeaknesses.effectiveAgainst, 
-                strengthsAndWeaknesses.doubleEffectiveAgainst
+            this.buildTypedDisplayPanel(
+                "Effective Against",
+                selectedTypes,
+                strengthsAndWeaknesses,
+                "effective"
             )
         );
 
         this.panelStrength.appendChild(
-            this.buildDisplayPanel(
+            this.buildSimpleDisplayPanel(
                 "Resistant To",
-                strengthsAndWeaknesses.resists,
-                strengthsAndWeaknesses.doubleResists,
-                strengthsAndWeaknesses.immuneFrom
+                strengthsAndWeaknesses.combined.resist,
+                strengthsAndWeaknesses.combined.resistDouble,
+                strengthsAndWeaknesses.combined.resistImmune
             )
-        )
+        );
 
         
 
@@ -573,22 +540,21 @@ class PokeType {
         this.panelWeakness.appendChild(rTitle);
 
         this.panelWeakness.appendChild(
-            this.buildDisplayPanel(
-                "Not Effective Against", 
-                strengthsAndWeaknesses.notEffectiveAgainst, 
-                strengthsAndWeaknesses.doubleNotEffectiveAgainst,
-                strengthsAndWeaknesses.immuneAgainst
-            )
-        );
-
-        this.panelWeakness.appendChild(
-            this.buildDisplayPanel(
+            this.buildSimpleDisplayPanel(
                 "Vulnerable To",
-                strengthsAndWeaknesses.vulnerableTo,
-                strengthsAndWeaknesses.doubleVulnerableTo
+                strengthsAndWeaknesses.combined.vulnerable,
+                strengthsAndWeaknesses.combined.vulnerableDouble
             )
         )
 
+        this.panelWeakness.appendChild(
+            this.buildTypedDisplayPanel(
+                "Not Effective Against",
+                selectedTypes,
+                strengthsAndWeaknesses,
+                "notEffective"
+            )
+        )
     }
 
     // 
@@ -651,6 +617,18 @@ const getSelfOrParentByClass = (element, className) => {
     }
 
     return element;
+}
+
+// adapted from https://stackoverflow.com/a/35922651
+// to use: 
+// myArray.reduce(getDuplicatesReducer, [])
+const getDuplicatesReducer = (accumulator, element, idx, arr) => {
+    // First, check that the .indexOf() function returns an index not equal to the index of the current element
+    // Then check that the element is not already in the accumulator array
+	if (arr.indexOf(element) !== idx && accumulator.indexOf(element) < 0) {
+        accumulator.push(element);
+    }
+    return accumulator;
 }
 
 const getDuplicateEntriesInStringArray = (array) => {
