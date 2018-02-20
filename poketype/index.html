@@ -2,16 +2,17 @@
 <html>
     <head>
         <title>Poketype | Pokemon GO | Check Pokemon Type Strengths &amp; Weaknesses</title>
+        <link href="img/favicon.jpg?v=0.3" rel="icon">
         <link href="css/style.css?v=0.3" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Barlow+Condensed:400,600,700" rel="stylesheet">
         <meta name="viewport" content="width=device-width">
 
         <!-- Facebook Open Graph card -->
-        <meta property="og:title" content="Poketype | Check Pokemon GO Type Strengths &amp; Weaknesses" />
-        <meta property="og:url" content="https://davehax-tools.herokuapp.com/poketype" />
-        <meta property="og:type" content="website" />
-        <meta property="og:description" content="Check Pokemon GO single or dual type strengths and weaknesses" />
-        <meta property="og:image" content="https://i.imgur.com/sEhsNis.jpg" />
+        <meta name="og:title" content="Poketype | Check Pokemon GO Type Strengths &amp; Weaknesses" />
+        <meta name="og:url" content="https://davehax-tools.herokuapp.com/poketype" />
+        <meta name="og:type" content="website" />
+        <meta name="og:description" content="Check Pokemon GO single or dual type strengths and weaknesses" />
+        <meta name="og:image" content="https://i.imgur.com/sEhsNis.jpg" />
 
         <!-- Twitter Summary Card -->
         <meta name="twitter:card" content="summary" />
@@ -33,13 +34,13 @@
         <script type="text/javascript" src="js/poketype.js?v=0.3"></script>
         <script type="text/javascript" src="js/lodash.min.js"></script>
         <script type="text/javascript">
-            // (function() {
+            (function() {
 
                 let poketyper = new PokeType(".poketype");
 
                 poketyper.go();
 
-            // })();
+            })();
         </script>
     </body>
 </html>
