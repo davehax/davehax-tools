@@ -446,7 +446,7 @@ class PokeType {
     }
 
     // Perform POKEMAN calcumalations
-    calculateStrengthsAndWeaknesses2(selectedTypes) {
+    calculateStrengthsAndWeaknesses(selectedTypes) {
         // define our return object to be filled in this function
         let effectivenessProfile = {
             combined: {
@@ -505,7 +505,7 @@ class PokeType {
             return;
         }
 
-        let strengthsAndWeaknesses = this.calculateStrengthsAndWeaknesses2(selectedTypes);
+        let strengthsAndWeaknesses = this.calculateStrengthsAndWeaknesses(selectedTypes);
         console.log(strengthsAndWeaknesses);
 
         // effective panel - prioritise double effective

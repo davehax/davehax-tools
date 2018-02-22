@@ -48,7 +48,7 @@ header {
 
 /* type */
 .type.unselected {
-    background-image: url('../img/poketype-assets/questionmark.png?v=0.3');
+    background-image: url('../img/poketype-assets/questionmark.png?v=20180222');
 }
 
 /* type - small */
@@ -76,7 +76,7 @@ header {
     margin: 1px; /* 100px w/h */
 
     background-color: transparent;
-    background-image: url('../img/poketype-assets/spritesheet.png?v=0.3');
+    background-image: url('../img/poketype-assets/spritesheet.png?v=20180222');
     background-size: 300px 150px;
 }
 
@@ -309,7 +309,7 @@ header {
 
 /* background */
 .background {
-    background-image: url('../img/pikachoo.jpg?v=0.3');
+    background-image: url('../img/pikachoo.jpg?v=20180222');
     background-position: center center;
     background-size: cover;
     min-height: calc(100vh - 2px);
