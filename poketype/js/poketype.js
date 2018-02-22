@@ -481,8 +481,8 @@ class PokeType {
         effectivenessProfile.combined.vulnerable = _.uniq(effectivenessProfile.combined.vulnerable);
 
         // And then filter our items that appear in the double arrays
-        effectivenessProfile.combined.resist = effectivenessProfile.combined.resist.filter((t) => effectivenessProfile.combined.resistDouble.indexOf(t) !== -1);
-        effectivenessProfile.combined.vulnerable = effectivenessProfile.combined.vulnerable.filter((t) => effectivenessProfile.combined.vulnerableDouble.indexOf(t) !== -1);
+        effectivenessProfile.combined.resist = effectivenessProfile.combined.resist.filter((t) => effectivenessProfile.combined.resistDouble.indexOf(t) === -1);
+        effectivenessProfile.combined.vulnerable = effectivenessProfile.combined.vulnerable.filter((t) => effectivenessProfile.combined.vulnerableDouble.indexOf(t) === -1);
 
         // Sort the arrays in the combined object alphabetically ascending
         for (let key in effectivenessProfile.combined) {
