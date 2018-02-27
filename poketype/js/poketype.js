@@ -460,6 +460,11 @@ class PokeType {
             }
         }
 
+        // Array vars so they can be passed by-reference to functions
+        let resist = [];
+        let resistImmune = [];
+        let vulnerable = [];
+
         // force distinct values for selected types
         selectedTypes = _.uniq(selectedTypes);
 
@@ -467,22 +472,34 @@ class PokeType {
         selectedTypes.forEach((t) => {
             let typeInfo = effectiveness[t];
             effectivenessProfile[t] = typeInfo;
-            effectivenessProfile.combined.resist = effectivenessProfile.combined.resist.concat(typeInfo.resist);
-            effectivenessProfile.combined.vulnerable = effectivenessProfile.combined.vulnerable.concat(typeInfo.vulnerable);
-            effectivenessProfile.combined.resistImmune = effectivenessProfile.combined.resistImmune.concat(typeInfo.immune);
+            resist = resist.concat(typeInfo.resist);
+            vulnerable = vulnerable.concat(typeInfo.vulnerable);
+            resistImmune = resistImmune.concat(typeInfo.immune);
         });
 
+        // vulnerable and immune combine to become resist
+        let intersect1 = stripIntersectionFromArrays(vulnerable, resistImmune);
+        vulnerable = intersect1.arguments[0];
+        resistImmune = intersect1.arguments[1];
+        resist = resist.concat(intersect1.intersection);
+
+        // resist and vulnerable cancel each other out
+        let intersect2 = stripIntersectionFromArrays(resist, vulnerable);
+        resist = intersect2.arguments[0];
+        vulnerable = intersect2.arguments[1];
+
         // extract duplicates
-        effectivenessProfile.combined.resistDouble = effectivenessProfile.combined.resist.reduce(getDuplicatesReducer, []);
-        effectivenessProfile.combined.vulnerableDouble = effectivenessProfile.combined.vulnerable.reduce(getDuplicatesReducer, []);
+        effectivenessProfile.combined.resistDouble = resist.reduce(getDuplicatesReducer, []);
+        effectivenessProfile.combined.vulnerableDouble = vulnerable.reduce(getDuplicatesReducer, []);
 
         // Get only distinct values for resist and vulnerable
-        effectivenessProfile.combined.resist = _.uniq(effectivenessProfile.combined.resist);
-        effectivenessProfile.combined.vulnerable = _.uniq(effectivenessProfile.combined.vulnerable);
+        // And then filter out items that appear in the double arrays
+        resist = _.uniq(resist).filter((t) => effectivenessProfile.combined.resistDouble.indexOf(t) === -1);
+        vulnerable = _.uniq(vulnerable).filter((t) => effectivenessProfile.combined.vulnerableDouble.indexOf(t) === -1);
 
-        // And then filter our items that appear in the double arrays
-        effectivenessProfile.combined.resist = effectivenessProfile.combined.resist.filter((t) => effectivenessProfile.combined.resistDouble.indexOf(t) === -1);
-        effectivenessProfile.combined.vulnerable = effectivenessProfile.combined.vulnerable.filter((t) => effectivenessProfile.combined.vulnerableDouble.indexOf(t) === -1);
+        effectivenessProfile.combined.resist = resist;
+        effectivenessProfile.combined.resistImmune = resistImmune;
+        effectivenessProfile.combined.vulnerable = vulnerable;
 
         // Sort the arrays in the combined object alphabetically ascending
         for (let key in effectivenessProfile.combined) {
@@ -631,6 +648,7 @@ const getDuplicatesReducer = (accumulator, element, idx, arr) => {
     return accumulator;
 }
 
+// In hindsight this function was a bit silly, if not creative
 const getDuplicateEntriesInStringArray = (array) => {
     let duplicates = [];
     let duplicateKeys = [];
@@ -657,5 +675,50 @@ const getDuplicateEntriesInStringArray = (array) => {
     return duplicateKeys;
 }
 
+// Lexical sort funcs
 const sortAlphabeticallyAsc = (a, b) => { return a.localeCompare(b); }
 const sortAlphabeticallyDesc = (a, b) => { return a.localeCompare(b); }
+
+// Will potentially mutate the arrays passed in
+// Returns an object {
+//      arguments: [array1, array2, ..., arrayN], -- these arrays are in the order that they were passed in as arguments
+//      intersection: [item1, item2, ..., itemN]   
+// }
+const stripIntersectionFromArrays = (...arrays) => {
+    let intersection = [];
+
+    // we need a copy of each array first
+    let clones = [];
+    arrays.forEach((arr) => {
+        clones.push(_.clone(arr));
+    });
+
+    // Loop through each array passed in
+    for (let i = 0; i < arrays.length; i++) {
+        // Loop through each cloned array
+        for (let j = 0; j < clones.length; j++) {
+            // If we aren't comparing the same array to itself then
+            if (i !== j) {
+                // For all elements in arrays[i]
+                arrays[i] = arrays[i].filter((e) => {
+                    // If the element occurs in clones[j]
+                    if (clones[j].indexOf(e) !== -1) {
+                        // Push the element on to the intersection array
+                        intersection.push(e);
+                        // And remove the element from arrays[i] by returning false
+                        return false;
+                    }
+                    else {
+                        // Keep the element if it doesn't occur in clones[j]
+                        return true;
+                    }
+                })
+            }
+        }
+    }
+
+    return {
+        intersection: intersection,
+        arguments: arrays
+    }
+}
