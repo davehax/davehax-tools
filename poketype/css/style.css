@@ -48,7 +48,7 @@ header {
 
 /* type */
 .type.unselected {
-    background-image: url('../img/poketype-assets/questionmark.png?v=20180227');
+    background-image: url('../img/poketype-assets/questionmark.png?v=20180228');
 }
 
 /* type - small */
@@ -76,7 +76,7 @@ header {
     margin: 1px; /* 100px w/h */
 
     background-color: transparent;
-    background-image: url('../img/poketype-assets/spritesheet.png?v=20180227');
+    background-image: url('../img/poketype-assets/spritesheet.png?v=20180228');
     background-size: 300px 150px;
 }
 
@@ -181,7 +181,7 @@ header {
     display: block;
     box-sizing: border-box;
     width: 320px;
-    padding: 20px 10px 60px 10px;
+    padding: 20px 0px 60px 0px;
 
     height: calc(100vh - 80px);
     overflow: auto;
@@ -217,11 +217,21 @@ header {
 .picker-panel-options {
     position: absolute;
     top: 20px;
-    left: 10px;
-    right: 10px;
+    left: 0px;
+    right: 0px;
     bottom: 60px;
 
+    padding-left: 10px;
+    padding-right: 10px;
+
     overflow: auto;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+.picker-panel-options .type-wrapper {
+    justify-self: center;
 }
 
 .picker-panel .btn.close {
@@ -309,7 +319,7 @@ header {
 
 /* background */
 .background {
-    background-image: url('../img/pikachoo.jpg?v=20180227');
+    background-image: url('../img/pikachoo.jpg?v=20180228');
     background-position: center center;
     background-size: cover;
     min-height: calc(100vh - 2px);
@@ -390,7 +400,7 @@ header {
     .type.fire { background-position: -500px -200px }
 
     .picker-panel {
-        width: 414px;
+        width: 441px;
     }
 
     .legend {
