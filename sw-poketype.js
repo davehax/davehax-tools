@@ -1,5 +1,5 @@
 // https://css-tricks.com/serviceworker-for-offline/
-var version = 'v1.1::';
+var version = 'v1.01::';
 
 self.addEventListener("install", function (event) {
     console.log("WORKER: Install event in progress");
@@ -21,7 +21,7 @@ self.addEventListener("install", function (event) {
                 */
 
                 let cacheAdd = cache.addAll([
-                    "/poketype/",
+                    "/poketype/index.html",
                     "/poketype/css/style.css",
                     "/poketype/img/favicon.jpg",
                     "/poketype/img/pikachoo.jpg",
