@@ -13,9 +13,6 @@ const PORT = process.env.PORT || 5000;
 // body parser - make JSON easy
 app.use(bodyParser.json());
 
-app.route("/instaloot").get((req, response) => { 
-    response.redirect("/instaloot/"); 
-});
 app.route("/instaloot/").get((req, response) => {
     response.sendFile(path.join(__dirname, "../instaloot/index.html"))
 });
@@ -57,9 +54,6 @@ app.route("/instaloot/loot").post((req, response) => {
     }
 });
 
-app.route("/poketype").get((req, response) => { 
-    response.redirect("/poketype/"); 
-});
 app.route("/poketype/").get((req, response) => {
     response.sendFile(path.join(__dirname, "../poketype/index.html"))
 });
