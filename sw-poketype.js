@@ -21,7 +21,6 @@ self.addEventListener("install", function (event) {
                 */
 
                 let cacheAdd = cache.addAll([
-                    "/poketype",
                     "/poketype/index.html",
                     "/poketype/css/style.css",
                     "/poketype/img/favicon.jpg",
