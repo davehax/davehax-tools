@@ -49,6 +49,7 @@ header {
 /* type */
 .type.unselected {
     background-image: url('../img/poketype-assets/questionmark.png?v=20180228');
+    background-size: 50px 50px;
 }
 
 /* type - small */
@@ -377,6 +378,11 @@ header {
         height: 98px;
         background-size: 600px 300px;
     }
+
+    .type.unselected {
+        background-size: 100px 100px;
+    }
+
 
     .type.normal { background-position: 0px 0px }
     .type.flying { background-position: -100px 0px }
