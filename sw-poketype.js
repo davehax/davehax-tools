@@ -19,9 +19,10 @@ self.addEventListener("install", function (event) {
                 The method below will add all resources we've indicated to the cache,
                 after making HTTP requests for each of them.
                 */
-                return cache.addAll([
+
+                let cacheAdd = cache.addAll([
                     "/poketype",
-                    "/poketype/index.html",
+                    // "/poketype/index.html",
                     "/poketype/css/style.css",
                     "/poketype/img/favicon.png",
                     "/poketype/img/pikachoo.jpg",
@@ -29,7 +30,13 @@ self.addEventListener("install", function (event) {
                     "/poketype/img/poketype-assets/spritesheet.png",
                     "/poketype/js/lodash.min.js",
                     "/poketype/js/poketype.js"
-                ])
+                ]);
+
+                cacheAdd.catch(function(error) {
+                    console.log(error);
+                })
+
+                return cacheAdd;
             })
             .then(function () {
                 console.log("WORKER: Install completed");
