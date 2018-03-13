@@ -101,7 +101,7 @@ let effectiveness = {
     "poison": {
         "effective": [type.fairy, type.grass],
         "resist": [type.bug, type.fairy, type.fighting, type.grass, type.poison],
-        "immune": [""]
+        "immune": []
     },
 
     "psychic": {
@@ -213,7 +213,7 @@ class PokeType {
         this.picker = new Picker(".picker-modal", (option) => {
             let selectedType = option.getAttribute("data-type");
             this.updatePickerControl(this.current, selectedType);
-            this.displayStrenthsAndWeaknesses();
+            this.displayStrengthsAndWeaknesses();
         });
 
         // bind events
@@ -225,7 +225,7 @@ class PokeType {
         this.type1Picker.querySelector(".btn.close").addEventListener("click", (evt) => {
             this.current = null;
             this.resetPickerControl(this.type1Picker);
-            this.displayStrenthsAndWeaknesses();
+            this.displayStrengthsAndWeaknesses();
         })
 
         this.type2Picker.querySelector(".option").addEventListener("click", (evt) => {
@@ -236,7 +236,7 @@ class PokeType {
         this.type2Picker.querySelector(".btn.close").addEventListener("click", (evt) => {
             this.current = null;
             this.resetPickerControl(this.type2Picker);
-            this.displayStrenthsAndWeaknesses();
+            this.displayStrengthsAndWeaknesses();
         })
     }
 
@@ -512,8 +512,8 @@ class PokeType {
     }
 
     //
-    displayStrenthsAndWeaknesses() {
-        this.resetStrenghtsAndWeaknesses();
+    displayStrengthsAndWeaknesses() {
+        this.resetStrengthsAndWeaknesses();
 
         let selectedTypes = this.getSelectedTypes();
 
@@ -575,7 +575,7 @@ class PokeType {
     }
 
     // 
-    resetStrenghtsAndWeaknesses() {
+    resetStrengthsAndWeaknesses() {
         this.panelStrength.innerHTML = "";
         this.panelWeakness.innerHTML = "";
     }
