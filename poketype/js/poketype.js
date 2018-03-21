@@ -263,14 +263,13 @@ class PokeType {
         })
 
         this.pokemonPicker.addEventListener("change", (evt) => {
-            console.log(evt.detail.value);
             fetchJson(evt.detail.value).then((d) => {
                 this.updatePickerControl(this.type1Picker, d.types[0].type.name);
                 if (d.types.length > 1) {
                     this.updatePickerControl(this.type2Picker, d.types[1].type.name);
                 }
                 else {
-                    this.updatePickerControl(this.type2Picker, "unselected");
+                    this.resetPickerControl(this.type2Picker);
                 }
                 this.displayStrengthsAndWeaknesses();
             })
