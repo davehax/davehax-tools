@@ -256,6 +256,10 @@ header {
     border-right: none;
 }
 
+.panel-wrapper.borderless {
+    border: none !important;
+}
+
 
 .panel-wrapper > h2 { margin: 0; }
 .panel-wrapper > h2, .panel-wrapper .label {
@@ -414,4 +418,9 @@ header {
         justify-content: center;
     }
 
+}
+
+/* Choices plugin */
+.choices, .choices * {
+    box-sizing: border-box;
 }

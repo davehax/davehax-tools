@@ -151,8 +151,6 @@ for (let i in effectiveness) {
     }
 }
 
-console.log(effectiveness);
-
 class PokeType {
     // As we're a class, all class properties must be declared in the constructor
     constructor(selector) {
@@ -165,6 +163,9 @@ class PokeType {
 
         this.type1Picker = null;
         this.type2Picker = null;
+
+        this.pokemonPicker = null;
+        this.pokemonPickerChoices = null;
 
         this.legend = null;
 
@@ -187,6 +188,13 @@ class PokeType {
         centeredPanel.appendChild(this.type1Picker);
         centeredPanel.appendChild(this.type2Picker);
 
+        // Pokemon Picker
+        let pokemonPickerContainer = document.createElement("div");
+        pokemonPickerContainer.classList.add("panel-wrapper");
+        pokemonPickerContainer.classList.add("borderless");
+        this.pokemonPicker = document.createElement("select");
+        pokemonPickerContainer.appendChild(this.pokemonPicker);
+
         // Legend
         this.legend = this.buildLegend();
 
@@ -205,10 +213,25 @@ class PokeType {
 
         
         this.container.appendChild(centeredPanel);
+        this.container.appendChild(pokemonPickerContainer);
         this.container.appendChild(this.legend);
         this.container.appendChild(this.panelStrength);
         this.container.appendChild(this.panelWeakness);
         this.container.appendChild(pickerPanel);
+
+        PokePicker.getPokemon().then((pokemon) => {
+            let choices = pokemon.map((p, idx) => {
+                return {
+                    value: p.url,
+                    label: p.name,
+                    id: p.idx
+                }
+            })
+            this.pokemonPickerChoices = new Choices(this.pokemonPicker, {
+                choices: choices,
+                shouldSort: false
+            });
+        });
 
         this.picker = new Picker(".picker-modal", (option) => {
             let selectedType = option.getAttribute("data-type");
@@ -238,6 +261,20 @@ class PokeType {
             this.resetPickerControl(this.type2Picker);
             this.displayStrengthsAndWeaknesses();
         })
+
+        this.pokemonPicker.addEventListener("change", (evt) => {
+            console.log(evt.detail.value);
+            fetchJson(evt.detail.value).then((d) => {
+                this.updatePickerControl(this.type1Picker, d.types[0].type.name);
+                if (d.types.length > 1) {
+                    this.updatePickerControl(this.type2Picker, d.types[1].type.name);
+                }
+                else {
+                    this.updatePickerControl(this.type2Picker, "unselected");
+                }
+                this.displayStrengthsAndWeaknesses();
+            })
+        });
     }
 
     resetPickerControl(element) {
@@ -585,7 +622,7 @@ class PokeType {
 
 
 
-
+// Picker
 class Picker {
     constructor(selector, onOptionSelected) {
         this.container = document.querySelector(selector);
@@ -622,8 +659,63 @@ class Picker {
     }
 }
 
+// Pokemon Picker
+class PokePicker {
+    static buildUrl(endPoint) {
+        return `https://pokeapi.co/api/v2${endPoint}`
+    }
+
+    // Returns a Promise
+    static get(endPoint) {
+        return fetchJson(this.buildUrl(endPoint));
+    }
+
+    static getPokemon() {
+        return new Promise((resolve, reject) => {
+            // Cache first strategy
+            let pokemon = localStorage.getItem("pokemans");
+
+            // If the cache is empty then request from network
+            if (pokemon === null) {
+                this.get("/pokemon?limit=9999")
+                    .then((results) => {
+                        // store in cache
+                        localStorage.setItem("pokemans", JSON.stringify(results.results));
+                        resolve(results.results);
+                    })
+                    .catch((error) => reject(error));
+            }
+            else {
+                resolve(JSON.parse(pokemon));
+            }
+        });
+    }
+
+    static getPokemonById(id) {
+        return this.get("/pokemon/id");
+    }
+}
+
 
 // Some utility functions
+const fetchJson = (url) => {
+    return new Promise((resolve, reject) => {
+        fetch(url)
+            .then((response) => {
+                if (response.ok) {
+                    return response.json()
+                }
+                else {
+                    reject(response);
+                }
+            })
+            .then((data) => {
+                resolve(data);
+            })
+    });
+}
+
+// Get self or parent (node) by class name
 const getSelfOrParentByClass = (element, className) => {
     if (element.classList.contains(className)) {
         return element;
