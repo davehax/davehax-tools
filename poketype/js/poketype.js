@@ -139,7 +139,7 @@ for (let i in effectiveness) {
         effectiveness[i].vulnerable = [];
 
         for (let j in effectiveness) {
-            if (effectiveness.hasOwnProperty(j) && i !== j) {
+            if (effectiveness.hasOwnProperty(j)) {
 
                 if (effectiveness[j].resist.indexOf(i) !== -1) { effectiveness[i].notEffective.push(j) }
                 if (effectiveness[j].immune.indexOf(i) !== -1) { effectiveness[i].notEffectiveImmune.push(j) }
