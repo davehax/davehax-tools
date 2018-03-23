@@ -55,8 +55,10 @@ app.route("/instaloot/loot").post((req, response) => {
 });
 
 app.route("/poketype/").get((req, response) => {
-    response.sendFile(path.join(__dirname, "../poketype/index.html"))
+    response.sendFile(path.join(__dirname, "../poketype/dist/index.html"))
 });
+
+app.use("/poketype/", express.static(path.join(__dirname, "../poketype/dist/")))
 
 // Server all files from current folder
 app.use("/", express.static(path.join(__dirname, "..")));

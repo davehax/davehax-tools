@@ -1,3 +1,6 @@
+import _ from "lodash";
+import Choices from "choices.js";
+
 const type = {
     bug: "bug",
     dark: "dark",
@@ -813,3 +816,5 @@ const stripIntersectionFromArrays = (...arrays) => {
         arguments: arrays
     }
 }
+
+export default PokeType;

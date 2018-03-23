@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "heroku-postbuild": "cd poketype && yarn install && yarn run build-prod"
   },
   "author": "",
   "license": "ISC",
@@ -15,5 +16,9 @@
     "path": "0.12.7",
     "request": "2.83.0",
     "request-promise": "4.2.2"
+  },
+  "engines": {
+    "yarn": "1.5.1",
+    "node": "8.9.4"
   }
 }
