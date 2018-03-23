@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "heroku-postbuild": "cd poketype && yarn install && yarn run build-prod"
+    "heroku-postbuild": "cd poketype && yarn install --production=false && yarn run build-prod"
   },
   "author": "",
   "license": "ISC",
