@@ -10,6 +10,9 @@ const app = express();
 // Listen on port x
 const PORT = process.env.PORT || 5000;
 
+// enable strict routing - my/route/ and my/route are no longer identical to express
+app.set('strict routing', true);
+
 // body parser - make JSON easy
 app.use(bodyParser.json());
 
