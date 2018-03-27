@@ -8,7 +8,9 @@ module.exports = {
         app: "./src/index.js"
     },
     plugins: [
-        new CleanWebpackPlugin(["dist"]),
+        new CleanWebpackPlugin(["dist", "../sw-webpack-poketype.js"], {
+            allowExternal: true
+        }),
         new HtmlWebpackPlugin({
             template: "src/index.template.ejs",
             inject: "body"

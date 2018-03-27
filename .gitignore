@@ -57,3 +57,11 @@ typings/
 # dotenv environment variables file
 .env
 
+#
+#
+# Manually specified files
+#
+#
+
+# Generated Service Worker for Poketype
+sw-webpack-poketype.js
