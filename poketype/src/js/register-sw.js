@@ -1,3 +1,5 @@
+import * as OfflinePluginRuntime from 'offline-plugin/runtime';
+
 const isLocalhost = Boolean(
     window.location.hostname === 'localhost' ||
     // [::1] is the IPv6 localhost address.
@@ -12,11 +14,12 @@ export default function RegisterServiceWorker() {
     // Service Workers are a progressive technology. We can safely ignore unsupported browsers
     if (!isLocalhost && 'serviceWorker' in navigator) {
         console.log('CLIENT: service worker registration in progress.');
-        navigator.serviceWorker.register('/sw-poketype.js').then(function () {
-            console.log('CLIENT: service worker registration complete.');
-        }, function () {
-            console.log('CLIENT: service worker registration failure.');
-        });
+        // navigator.serviceWorker.register('/sw-poketype.js').then(function () {
+        //     console.log('CLIENT: service worker registration complete.');
+        // }, function () {
+        //     console.log('CLIENT: service worker registration failure.');
+        // });
+        OfflinePluginRuntime.install();
     } else {
         console.log('CLIENT: service worker is not supported.');
     }

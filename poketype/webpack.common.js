@@ -1,6 +1,7 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
+const OfflinePlugin = require('offline-plugin');
 
 module.exports = {
     entry: {
@@ -11,7 +12,13 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: "src/index.template.ejs",
             inject: "body"
-        })
+        }),
+        new OfflinePlugin({
+            ServiceWorker: {
+                output: "../../sw-webpack-poketype.js",
+                minify: false
+            }
+        }),
     ],
     output: {
         filename: "[name].bundle.js",
