@@ -2,6 +2,7 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
 const OfflinePlugin = require('offline-plugin');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = {
     entry: {
@@ -14,6 +15,10 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: "src/index.template.ejs",
             inject: "body"
+        }),
+        new MiniCssExtractPlugin({
+            filename: "[name].css",
+            chunkFilename: "[id].css",
         }),
         new OfflinePlugin({
             ServiceWorker: {
@@ -31,7 +36,8 @@ module.exports = {
             {
                 test: /\.css$/,
                 use: [
-                    "style-loader",
+                    MiniCssExtractPlugin.loader,
+                    // "style-loader",
                     "css-loader"
                 ]
             },
@@ -40,7 +46,7 @@ module.exports = {
                 use: [
                     "file-loader"
                 ]
-            }, 
+            },
             {
                 test: /\.(woff|woff2|eot|ttf|otf)$/,
                 use: [
