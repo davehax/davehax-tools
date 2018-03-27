@@ -396,8 +396,8 @@ class PokeType {
         let legend = document.createElement("section");
         legend.classList.add("legend");
 
-        legend.appendChild(buildLegendItem("Super Effective / Resistant", "double-effective"));
-        legend.appendChild(buildLegendItem("Super Ineffective / Vulnerable", "double-vulnerable"));
+        legend.appendChild(buildLegendItem("Super Effective", "double-effective"));
+        legend.appendChild(buildLegendItem("Super Vulnerable", "double-vulnerable"));
         legend.appendChild(buildLegendItem("Immune", "immune"));
 
         return legend;
