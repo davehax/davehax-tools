@@ -21,6 +21,7 @@ module.exports = {
             chunkFilename: "[id].css",
         }),
         new OfflinePlugin({
+            publicPath: "/poketype/",
             ServiceWorker: {
                 output: "../../sw-webpack-poketype.js",
                 minify: false
