@@ -12,6 +12,7 @@ import {
 import Picker from "./picker.js";
 import PokePicker from "./pokepicker.js";
 import type, { effectiveness } from "./type.js";
+import pokedata from "./pokedata.json";
 
 class PokeType {
     // As we're a class, all class properties must be declared in the constructor
@@ -81,18 +82,16 @@ class PokeType {
         this.container.appendChild(this.panelWeakness);
         this.container.appendChild(pickerPanel);
 
-        PokePicker.getPokemon().then((pokemon) => {
-            let choices = pokemon.map((p, idx) => {
-                return {
-                    value: p.url,
-                    label: p.name,
-                    id: p.idx
-                }
-            })
-            this.pokemonPickerChoices = new Choices(this.pokemonPicker, {
-                choices: choices,
-                shouldSort: false
-            });
+        let choices = pokedata.map((p, idx) => {
+            return {
+                value: JSON.stringify(p),
+                label: p.name,
+                id: idx
+            }
+        })
+        this.pokemonPickerChoices = new Choices(this.pokemonPicker, {
+            choices: choices,
+            shouldSort: false
         });
 
         this.picker = new Picker(".picker-modal", (option) => {
@@ -124,17 +123,14 @@ class PokeType {
             this.displayStrengthsAndWeaknesses();
         })
 
+        // When a pokemon is selected from the dropdown list
         this.pokemonPicker.addEventListener("change", (evt) => {
-            fetchJson(evt.detail.value).then((d) => {
-                this.updatePickerControl(this.type1Picker, d.types[0].type.name);
-                if (d.types.length > 1) {
-                    this.updatePickerControl(this.type2Picker, d.types[1].type.name);
-                }
-                else {
-                    this.resetPickerControl(this.type2Picker);
-                }
-                this.displayStrengthsAndWeaknesses();
-            })
+            let pokemon = JSON.parse(evt.detail.value);
+            this.updatePickerControl(this.type1Picker, pokemon.types[0]);
+            if (pokemon.types.length > 1) {
+                this.updatePickerControl(this.type2Picker, pokemon.types[1]);
+            }
+            this.displayStrengthsAndWeaknesses();
         });
     }
 
