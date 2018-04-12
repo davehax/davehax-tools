@@ -21,7 +21,7 @@ poketyper.go();
 OfflinePluginRuntime.install();
 
 // Register a global no-op Service Worker
-if (!isLocalHost && "serviceWorker" in navigator) {
+if (!isLocalhost && "serviceWorker" in navigator) {
     navigator.serviceWorker.register('/sw-noop.js').then(function () {
         console.log('CLIENT: **noop** service worker registration complete.');
     }, function () {
