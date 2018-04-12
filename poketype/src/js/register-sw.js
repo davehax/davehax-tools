@@ -20,6 +20,12 @@ export default function RegisterServiceWorker() {
         //     console.log('CLIENT: service worker registration failure.');
         // });
         OfflinePluginRuntime.install();
+
+        navigator.serviceWorker.register('/sw-noop.js').then(function () {
+            console.log('CLIENT: **noop** service worker registration complete.');
+        }, function () {
+            console.log('CLIENT: **noop** service worker registration failure.');
+        });
     } else {
         console.log('CLIENT: service worker is not supported.');
     }
