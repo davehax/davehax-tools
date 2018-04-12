@@ -11,7 +11,7 @@ const isLocalhost = Boolean(
 // Service Workers are a progressive technology. We can safely ignore unsupported browsers
 if (!isLocalhost && 'serviceWorker' in navigator) {
     console.log('CLIENT: service worker registration in progress.');
-    navigator.serviceWorker.register('/sw-instaloot.js').then(function () {
+    navigator.serviceWorker.register('/instaloot/sw-instaloot.js').then(function () {
         console.log('CLIENT: service worker registration complete.');
     }, function () {
         console.log('CLIENT: service worker registration failure.');

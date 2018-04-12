@@ -9,7 +9,8 @@ module.exports = {
         app: "./src/index.js"
     },
     plugins: [
-        new CleanWebpackPlugin(["dist", "../sw-webpack-poketype.js"], {
+        // new CleanWebpackPlugin(["dist", "../sw-webpack-poketype.js"], {
+        new CleanWebpackPlugin(["dist"], {
             allowExternal: true
         }),
         new HtmlWebpackPlugin({
@@ -23,7 +24,7 @@ module.exports = {
         new OfflinePlugin({
             publicPath: "/poketype/",
             ServiceWorker: {
-                output: "../../sw-webpack-poketype.js",
+                output: "sw-webpack-poketype.js",
                 minify: false
             }
         }),
